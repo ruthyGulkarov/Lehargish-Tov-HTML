@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>אבחון</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* כל ה-CSS נשאר בדיוק אותו דבר */
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+// קריאת הנתונים מה-URL
+const params = new URLSearchParams(window.location.search);
+function get(key) { return params.get(key) || ""; }
+
+// בניית תרגילים דינמית
+const exercisesRaw = get("תרגילים");
+let exercisesHTML = "";
+if (exercisesRaw) {
+    const exercises = JSON.parse(decodeURIComponent(exercisesRaw));
+    exercisesHTML = exercises.map(ex => `
+        <div class="exercise">
+            <div class="exercise-header">
+                <div>${ex.שם}</div>
+                <div>ספירה: ${ex.ספירה}</div>
+                <div>חזרות: ${ex.חזרות}</div>
+                <div>סטים: ${ex.סטים}</div>
+            </div>
+            <div class="exercise-description">${ex.תיאור}</div>
+        </div>
+    `).join("");
+}
+
+// הכנסת הכל לדף
+document.getElementById("root").innerHTML = `
+  <!-- כל ה-HTML שלך כאן, עם ${get("שם")} במקום {{שם}} וכו' -->
+`;
+</script>
+</body>
+</html>
