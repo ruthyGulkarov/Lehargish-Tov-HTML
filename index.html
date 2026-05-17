@@ -5,39 +5,403 @@
   <title>אבחון</title>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* כל ה-CSS נשאר בדיוק אותו דבר */
+   @page {
+		size: A4;
+		margin: 0;
+	}
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #efefef;
+      font-family: 'Assistant', sans-serif;
+      direction: rtl;
+      color: #000;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+
+	  width: 186mm;
+	  min-height: 297mm;
+
+	  background: white;
+
+	  margin: 10px 0;
+
+	  padding:
+		10mm
+		10mm
+		10mm
+		10mm;
+
+	  position: relative;
+
+	  page-break-after: always;
+
+	  overflow: hidden;
+
+	}
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .top-row {
+	  display: flex;
+	  justify-content: space-between;
+
+	  align-items: flex-start;
+
+	  line-height: 1;
+
+	  font-size: 11px;
+
+	}
+
+    .date, .bsad {
+      font-size: 11px;
+	  line-height: 1;
+    }
+
+    .header {
+      text-align: center;
+    }
+
+    .logo {
+      width: 220px;
+    }
+
+    .divider {
+      border-top: 1px solid #444;
+      margin-top: 5px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #355070;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px 40px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .label {
+      white-space: wrap;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    td {
+      border: 1px solid #555;
+      padding: 5px;
+      font-size: 11px;
+      vertical-align: middle;
+    }
+
+    td:first-child {
+      width: 38%;
+      font-weight: 600;
+    }
+
+    .summary {
+      margin-top: 10px;
+    }
+
+    .summary-title {
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .summary-box {
+      min-height: 120px;
+      border: 1px solid #777;
+      padding: 5px;
+    }
+
+    .recommendations {
+      margin-top: 30px;
+    }
+
+    .recommendations-box {
+      min-height: 120px;
+      border: 1px solid #777;
+      padding: 5px;
+    }
+
+    .exercise-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    <--.exercise {
+      border: 1px solid #444;
+      padding: 5px;
+      margin-bottom: 10px;
+      break-inside: avoid;
+    }-->
+
+    .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .exercise-description {
+      font-size: 11px;
+      line-height: 1.8;
+      min-height: 50px;
+    }
+	.note-wrapper {
+
+	  width: 100%;
+
+	  display: flex;
+
+	  justify-content: flex-end;
+	  margin-bottom:50px;
+
+	}
+    .exercise-note {
+
+	  width: 220px;
+
+	  border: 2px solid #444;
+
+	  padding: 12px;
+
+	  transform: rotate(-25deg);
+
+	  font-size: 13px;
+
+	  line-height: 1.8;
+
+	  background: white;
+
+	  text-align: center;
+
+	  margin-top: 10px;
+
+	  margin-right: 40px;
+	}
+
+    .footer-notes {
+      margin-top: 80px;
+      text-align: center;
+      line-height: 2.2;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .success {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+	@media print {
+
+	  @page {
+		size: A4;
+		margin: 25px 0;
+	  }
+
+	  html,
+	  body {
+		width: 210mm;
+		background: white;
+		margin: 0;
+		padding: 0;
+	  }
+
+	  body {
+		margin: 0 auto;
+		padding: 0 auto;
+	  }
+
+	  .page {
+
+		width: 186mm;
+		min-height: auto;
+
+		margin: 0 auto;
+		padding: 0;
+
+		box-shadow: none;
+
+		overflow: visible;
+
+		page-break-after: always;
+	  }
+	}
   </style>
 </head>
 <body>
-<div id="root"></div>
 
 <script>
-// קריאת הנתונים מה-URL
-const params = new URLSearchParams(window.location.search);
-function get(key) { return params.get(key) || ""; }
+  const params = new URLSearchParams(window.location.search);
+  function get(key) { return params.get(key) || ""; }
 
-// בניית תרגילים דינמית
-const exercisesRaw = get("תרגילים");
-let exercisesHTML = "";
-if (exercisesRaw) {
-    const exercises = JSON.parse(decodeURIComponent(exercisesRaw));
-    exercisesHTML = exercises.map(ex => `
+  // תרגילים דינמיים
+  let exercisesHTML = "<p>אין תרגילים</p>";
+  const exercisesRaw = get("תרגילים");
+  if (exercisesRaw) {
+    try {
+      const exercises = JSON.parse(exercisesRaw);
+      exercisesHTML = exercises.map(ex => `
         <div class="exercise">
-            <div class="exercise-header">
-                <div>${ex.שם}</div>
-                <div>ספירה: ${ex.ספירה}</div>
-                <div>חזרות: ${ex.חזרות}</div>
-                <div>סטים: ${ex.סטים}</div>
-            </div>
-            <div class="exercise-description">${ex.תיאור}</div>
+          <div class="exercise-header">
+            <div>${ex.שם || ""}</div>
+            <div>ספירה: ${ex.ספירה || ""}</div>
+            <div>חזרות: ${ex.חזרות || ""}</div>
+            <div>סטים: ${ex.סטים || ""}</div>
+          </div>
+          <div class="exercise-description">${ex.תיאור || ""}</div>
         </div>
-    `).join("");
-}
+      `).join("");
+    } catch(e) {
+      exercisesHTML = "<p>שגיאה בטעינת תרגילים</p>";
+    }
+  }
 
-// הכנסת הכל לדף
-document.getElementById("root").innerHTML = `
-  <!-- כל ה-HTML שלך כאן, עם ${get("שם")} במקום {{שם}} וכו' -->
-`;
+  document.write(`
+  <!-- עמוד 1: אבחון -->
+  <div class="page">
+    <div class="page-header">
+      <div class="top-row">
+        <div class="bsad">בס"ד</div>
+        <div class="date">תאריך: ${get("תאריך")}</div>
+      </div>
+      <div class="header">
+        <img src="logo.png" class="logo">
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="title">אבחון</div>
+
+    <div class="personal-info">
+      <div class="section-title">פרטי לקוחה</div>
+      <div class="info-grid">
+        <div class="field"><div class="label">שם:</div><div>${get("שם")}</div></div>
+        <div class="field"><div class="label">כתובת:</div><div>${get("כתובת")}</div></div>
+        <div class="field"><div class="label">תאריך לידה:</div><div>${get("תאריך_לידה")}</div></div>
+        <div class="field"><div class="label">גיל:</div><div>${get("גיל")}</div></div>
+        <div class="field"><div class="label">טלפון נייד:</div><div>${get("טלפון_נייד")}</div></div>
+        <div class="field"><div class="label">טלפון בית:</div><div>${get("טלפון_בית")}</div></div>
+        <div class="field"><div class="label">מחלות רקע:</div><div>${get("מחלות_רקע")}</div></div>
+        <div class="field"><div class="label">תרופות:</div><div>${get("תרופות")}</div></div>
+        <div class="field"><div class="label">עיסוק:</div><div>${get("עיסוק")}</div></div>
+        <div class="field"><div class="label">מדרסים:</div><div>${get("מדרסים")}</div></div>
+        <div class="field"><div class="label">רקע:</div><div>${get("רקע")}</div></div>
+        <div class="field"><div class="label">תלונה:</div><div>${get("תלונה")}</div></div>
+      </div>
+    </div>
+
+    <table>
+      <tr><td>הליכה: ברכיים</td><td>${get("הליכה_ברכיים")}</td></tr>
+      <tr><td>טווח תנועה</td><td>${get("טווח_תנועה")}</td></tr>
+      <tr><td>מנח כף רגל</td><td>${get("מנח_כף_רגל")}</td></tr>
+      <tr><td>יציבה כללית</td><td>${get("יציבה_כללית")}</td></tr>
+      <tr><td>עמידה: ראש</td><td>${get("עמידה_ראש")}</td></tr>
+      <tr><td>קו כתף</td><td>${get("קו_כתף")}</td></tr>
+      <tr><td>קו שכמות</td><td>${get("קו_שכמות")}</td></tr>
+      <tr><td>יליום עם מדרסים</td><td>${get("יליום_עם_מדרסים")}</td></tr>
+      <tr><td>יליום בלי מדרסים</td><td>${get("יליום_בלי_מדרסים")}</td></tr>
+      <tr><td>אסיסים</td><td>${get("אסיסים")}</td></tr>
+      <tr><td>סרעפת</td><td>${get("סרעפת")}</td></tr>
+      <tr><td>ברכיים</td><td>${get("ברכיים")}</td></tr>
+      <tr><td>קרסול</td><td>${get("קרסול")}</td></tr>
+      <tr><td>כפיפה</td><td>${get("כפיפה")}</td></tr>
+      <tr><td>יציבה ספונטנית</td><td>${get("יציבה_ספונטנית")}</td></tr>
+      <tr><td>ישיבה ספונטנית</td><td>${get("ישיבה_ספונטנית")}</td></tr>
+    </table>
+
+    <div class="summary">
+      <div class="summary-title">סיכום:</div>
+      <div class="summary-box">${get("סיכום")}</div>
+    </div>
+
+    <div class="recommendations">
+      <div class="summary-title">המלצות:</div>
+      <div class="recommendations-box">${get("המלצות")}</div>
+    </div>
+  </div>
+
+  <!-- עמוד 2: תרגילים -->
+  <div class="page">
+    <div class="page-header">
+      <div class="top-row">
+        <div class="bsad">בס"ד</div>
+        <div class="date">תאריך: ${get("תאריך")}</div>
+      </div>
+      <div class="header">
+        <img src="logo.png" class="logo">
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="exercise-title">תרגילים</div>
+
+    <div class="note-wrapper">
+      <div class="exercise-note">
+        <div>ס"ב = סוגרים + בטן</div>
+        <div>סב"ע = סוגרים + בטן + עכוז</div>
+      </div>
+    </div>
+
+    ${exercisesHTML}
+
+    <div class="footer-notes">
+      חובה לשמור על הסדר של התרגילים !!!<br>
+      חובה לתרגל לפחות 4 שעות לפני שינה !!!!
+    </div>
+
+    <div class="success">
+      בהצלחה רבה !!
+    </div>
+  </div>
+  `);
 </script>
+
 </body>
 </html>
